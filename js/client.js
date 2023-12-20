@@ -6,32 +6,13 @@ const messageInput = document.getElementById('messageInp');
 const messsageContainer = document.querySelector(".container")
 
 
-
-
-window.addEventListener('DOMContentLoaded',()=>{
-    const el = document.getElementById('send-container');
-    if (el) {
-        // console.log("if executed")
-        el.addEventListener('send',(e)=>{
-            e.preventDefault();
-            const message = document.getElementById('messageInp').value; 
-            append(`you: ${message}`,'right') 
-            socket.emit('send', message)
-            messageInput.value=''
-        })
-    }
-    else{
-        console.log("nope")
-    }
-})
-
-// el.addEventListener('send',(e)=>{
-//     e.preventDefault();
-//     const message = document.getElementById('messageInp').value; 
-//     append(`you: ${message}`,'right') 
-//     socket.emit('send', message)
-//     messageInput.value=''
-// })
+form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const message = messageInput.value;
+    append(`you: ${message}`,'right');
+    socket.emit('send',message);
+    messageInput.value = '';
+});
 
 
 const uname = prompt("Enter your name to join");

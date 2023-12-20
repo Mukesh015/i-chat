@@ -5,7 +5,6 @@ const user = {};
 io.on('connection',socket=>{
 
     socket.on('new-user-joined',user_name=>{
-        console.log(user_name + " connected");
         user[socket.id] = user_name;
         socket.broadcast.emit('user-joined',user_name);
     });
