@@ -1,11 +1,41 @@
-
 const socket = io('http://localhost:8000')
 
 
-const form = document.getElementById('send-cointainer');
+const form = document.getElementById('send-container');
 const messageInput = document.getElementById('messageInp');
 const messsageContainer = document.querySelector(".container")
 
+
+
+
+window.addEventListener('DOMContentLoaded',()=>{
+    const el = document.getElementById('send-container');
+    if (el) {
+        // console.log("if executed")
+        el.addEventListener('send',(e)=>{
+            e.preventDefault();
+            const message = document.getElementById('messageInp').value; 
+            append(`you: ${message}`,'right') 
+            socket.emit('send', message)
+            messageInput.value=''
+        })
+    }
+    else{
+        console.log("nope")
+    }
+})
+
+// el.addEventListener('send',(e)=>{
+//     e.preventDefault();
+//     const message = document.getElementById('messageInp').value; 
+//     append(`you: ${message}`,'right') 
+//     socket.emit('send', message)
+//     messageInput.value=''
+// })
+
+
+const uname = prompt("Enter your name to join");
+socket.emit('new-user-joined',uname);
 
 const append = (message, position)=>{
     const messageElement = document.createElement('div');
@@ -15,22 +45,11 @@ const append = (message, position)=>{
     messsageContainer.append(messageElement);
 }
 
-
-const uname = prompt("Enter your name to join");
-socket.emit('new-user-joined',uname);
-
 socket.on('user-joined',name=>{
     append(`${name} joined the chat`,'right')
 });
 
-socket.on('recieve',data=>{
+socket.on('receive',data=>{
     append(`${data.name}: ${data.message}`,'left')
 });
 
-form.addEventListener('submit',(e)=>{
-  e.preventDefault();
-  const message = messageInput.value; 
-  append(`you: ${message}`,'right') 
-  socket.emit('send', message)
-  messageInput.value=''
-})
