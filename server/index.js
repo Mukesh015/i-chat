@@ -12,4 +12,8 @@ io.on('connection',socket=>{
     socket.on('send', message => {
         socket.broadcast.emit('receive',{ message: message, user_name: user[socket.id]});
     });
+    socket.on('disconnect',message =>{
+        socket.broadcast.emit('left',user[socket.id]);
+        delete user[socket.id];
+    })
 });
